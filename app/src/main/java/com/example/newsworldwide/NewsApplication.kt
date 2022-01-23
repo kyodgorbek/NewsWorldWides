@@ -1,6 +1,7 @@
 package com.example.newsworldwide
 
 import android.app.Application
+import com.example.newsworldwide.di.Modules.apiModule
 
 import com.example.newsworldwide.di.Modules.viewModels
 import org.koin.android.ext.koin.androidContext
@@ -16,7 +17,7 @@ class NewsApplication: Application() {
             androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
             androidContext(this@NewsApplication)
 
-            modules(viewModels)
+            modules(listOf(viewModels, apiModule))
         }
     }
 
