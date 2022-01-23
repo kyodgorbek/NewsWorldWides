@@ -19,11 +19,13 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
     private var _newsResponse= MutableLiveData<Result<NewsResponse>>()
     // Expose to the outside world
     val news: LiveData<Result<NewsResponse>> = _newsResponse
+ var progress:MutableLiveData<Boolean> = MutableLiveData(false)
+
 
     @UiThread
     fun getNews() {
         viewModelScope.launch(Dispatchers.IO) {
-
+  progress.value = true
             try {
                 val response = repository.getNews().body()!!
                 _newsResponse.postValue(Result.Success(response))
@@ -31,8 +33,13 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
                 _newsResponse.postValue(Result.Failure("Opps  please retry", ioexception))
             } catch (httpException: HttpException) {
                 _newsResponse.postValue(Result.Failure("[HTTP] error please retry", httpException))
+            }finally {
+                progress.postValue(false)
             }
         }
     }
+
+
+
 
 }
