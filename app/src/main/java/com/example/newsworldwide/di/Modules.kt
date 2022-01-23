@@ -3,6 +3,7 @@ package com.example.newsworldwide.di
 import android.content.Context
 import com.example.newsworldwide.ui.viewmodel.NewsViewModel
 import com.example.newsworldwide.internet.NewsInterface
+import com.example.newsworldwide.repository.NewsRepository
 import com.example.newsworldwide.utils.Constants
 
 import okhttp3.Cache
@@ -22,46 +23,55 @@ object Modules {
         viewModel { NewsViewModel(get()) }
     }
 
-
-    private fun provideOkHttpClient(cache: Cache): OkHttpClient {
-        val logger = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-
-        return OkHttpClient.Builder()
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .cache(cache)
-            .addInterceptor { chain ->
-                val newRequest = chain.request().newBuilder()
-                    .header("X-API-Key", Constants.API_KEY)
-                chain.proceed(newRequest.build())
-            }
-            .addInterceptor(logger)
-            .build()
-    }
-
     val apiModule = module {
 
+        factory{NewsRepository(get())}
 
-        fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                //.addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
-                .build()
+        single<NewsInterface> {
+            provideRetrofit(get<OkHttpClient>())
         }
 
-
-         fun provideCache(context: Context): Cache {
-            val cacheSize: Long = 10 * 1024 * 1024
-            return Cache(context.cacheDir, cacheSize)
+        factory<OkHttpClient> {
+            provideOkHttpClient(get<Cache>())
         }
 
-
-        fun provideAppService(retrofit: Retrofit): NewsInterface =
-            retrofit.create(NewsInterface::class.java)
+        factory<Cache> {
+            provideCache(get<Context>())
+        }
     }
+}
+
+
+fun provideCache(context: Context): Cache {
+    val cacheSize: Long = 10 * 1024 * 1024
+    return Cache(context.cacheDir, cacheSize)
+}
+
+fun provideOkHttpClient(cache: Cache): OkHttpClient {
+    val logger = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    return OkHttpClient.Builder()
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .cache(cache)
+        .addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .header("X-API-Key", Constants.API_KEY)
+            chain.proceed(newRequest.build())
+        }
+        .addInterceptor(logger)
+        .build()
+}
+
+fun provideRetrofit(okHttpClient: OkHttpClient): NewsInterface {
+    return Retrofit.Builder()
+        .baseUrl(Constants.BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        //.addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
+        .build()
+        .create(NewsInterface::class.java)
 }

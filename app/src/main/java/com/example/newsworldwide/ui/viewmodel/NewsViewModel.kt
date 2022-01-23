@@ -16,9 +16,9 @@ import com.example.newsworldwide.utils.Result
 class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
 
 
-    private var _newsResponse= MutableLiveData<Result<NewsResponse>>()
+    private var _newsResponse= MutableLiveData<NewsResponse>()
     // Expose to the outside world
-    val news: LiveData<Result<NewsResponse>> = _newsResponse
+    val news: LiveData<NewsResponse> = _newsResponse
  var progress:MutableLiveData<Boolean> = MutableLiveData(false)
 
 
@@ -28,11 +28,8 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
   progress.value = true
             try {
                 val response = repository.getNews().body()!!
-                _newsResponse.postValue(Result.Success(response))
-            } catch (ioexception: IOException) {
-                _newsResponse.postValue(Result.Failure("Opps  please retry", ioexception))
-            } catch (httpException: HttpException) {
-                _newsResponse.postValue(Result.Failure("[HTTP] error please retry", httpException))
+                _newsResponse.postValue(response)
+
             }finally {
                 progress.postValue(false)
             }
