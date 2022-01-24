@@ -31,6 +31,7 @@ class NewsAdapter(private var itemList: MutableList<Article> = mutableListOf<Art
         fun bind(articles: Article) {
             itemBinding.articleDescription.text = articles.description
             itemBinding.articleTitle.text = articles.title
+            itemBinding.article = articles
 
         }
     }
