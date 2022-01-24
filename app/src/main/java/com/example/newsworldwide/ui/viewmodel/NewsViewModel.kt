@@ -21,11 +21,13 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
     val news: LiveData<NewsResponse> = _newsResponse
  var progress:MutableLiveData<Boolean> = MutableLiveData(false)
 
-
+init{
+    getNews()
+}
     @UiThread
     fun getNews() {
         viewModelScope.launch(Dispatchers.IO) {
-  progress.value = true
+  progress.postValue(true)
             try {
                 val response = repository.getNews().body()!!
                 _newsResponse.postValue(response)
