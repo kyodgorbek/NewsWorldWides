@@ -3,8 +3,8 @@ package com.example.newsworldwide.di
 import android.content.Context
 import com.example.newsworldwide.ui.viewmodel.NewsViewModel
 import com.example.newsworldwide.internet.NewsInterface
-import com.example.newsworldwide.repository.NewsRepository
-import com.example.newsworldwide.utils.Constants
+import com.example.newsworldwide.domain.repository.NewsRepository
+import com.example.newsworldwide.domain.utils.Constants
 
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -57,11 +57,6 @@ fun provideOkHttpClient(cache: Cache): OkHttpClient {
         .writeTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .cache(cache)
-        .addInterceptor { chain ->
-            val newRequest = chain.request().newBuilder()
-                .header("X-API-Key", Constants.API_KEY)
-            chain.proceed(newRequest.build())
-        }
         .addInterceptor(logger)
         .build()
 }
@@ -71,7 +66,6 @@ fun provideRetrofit(okHttpClient: OkHttpClient): NewsInterface {
         .baseUrl(Constants.BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
-        //.addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
         .build()
         .create(NewsInterface::class.java)
 }

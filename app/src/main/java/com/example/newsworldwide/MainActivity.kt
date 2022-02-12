@@ -7,9 +7,8 @@ import androidx.core.view.isVisible
 
 import com.example.newsworldwide.databinding.ActivityMainBinding
 import com.example.newsworldwide.model.Article
-import com.example.newsworldwide.model.NewsResponse
 import com.example.newsworldwide.ui.viewmodel.NewsViewModel
-import com.example.newsworldwide.ui.viewmodel.adapter.NewsAdapter
+import com.example.newsworldwide.ui.adapter.NewsAdapter
 
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

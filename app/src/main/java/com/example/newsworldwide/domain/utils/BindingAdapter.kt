@@ -1,4 +1,4 @@
-package com.example.newsworldwide.utils
+package com.example.newsworldwide.domain.utils
 
 
 import android.widget.ImageView
