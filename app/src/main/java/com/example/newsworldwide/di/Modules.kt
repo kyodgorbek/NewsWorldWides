@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.newsworldwide.ui.viewmodel.NewsViewModel
 import com.example.newsworldwide.internet.NewsInterface
 import com.example.newsworldwide.domain.repository.NewsRepository
+import com.example.newsworldwide.domain.use_case.NewsResponseUseCase
 import com.example.newsworldwide.domain.utils.Constants
 
 import okhttp3.Cache
@@ -26,6 +27,7 @@ object Modules {
     val apiModule = module {
 
         factory{NewsRepository(get())}
+        factory { NewsResponseUseCase(get()) }
 
         single<NewsInterface> {
             provideRetrofit(get<OkHttpClient>())
