@@ -11,8 +11,9 @@ import com.example.newsworldwide.databinding.NewsItemBinding.*
 import com.example.newsworldwide.domain.utils.parseDate
 import com.example.newsworldwide.domain.utils.userFormat
 import com.example.newsworldwide.model.Article
+import com.example.newsworldwide.ui.NewsFragment
 
-class NewsAdapter(private val context:Context): RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter(private val onClick: (Article) -> Unit): RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     override fun getItemCount(): Int {
         return differ.currentList.size
@@ -41,6 +42,8 @@ class NewsAdapter(private val context:Context): RecyclerView.Adapter<NewsAdapter
     override fun onBindViewHolder(holder: NewsAdapter.NewsViewHolder, position: Int) {
         var articleItems = differ.currentList[position]
         holder.bind(articleItems)
+        holder.itemView.setOnClickListener { onClick(articleItems) }
+
     }
 
     class NewsViewHolder(private val itemBinding: NewsItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
@@ -51,7 +54,6 @@ class NewsAdapter(private val context:Context): RecyclerView.Adapter<NewsAdapter
                 itemBinding.articleDate.text = it.userFormat()
             }
             itemBinding.article = articles
-
 
         }
     }

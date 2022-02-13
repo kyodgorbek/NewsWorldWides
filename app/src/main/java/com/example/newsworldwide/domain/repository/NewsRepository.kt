@@ -18,7 +18,14 @@ suspend fun getNews() : Result<NewsResponse>{
    }
 }
 
-
+   suspend fun getDetailNews() : Result<NewsResponse>{
+      return try {
+         val response = apiInterface.getDetailNews()
+         Result.Success(response)
+      } catch (ex: Exception) {
+         Result.Error(ex)
+      }
+   }
 
 
 }

@@ -14,9 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel by viewModel<NewsViewModel>()
 
-    private val adapter = NewsAdapter(this)
 
 
     private lateinit var binding: ActivityMainBinding
@@ -25,18 +23,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //Add adapter in recyclerView
-        binding.recyclerView.adapter = adapter
-
-        // listening new data
-        viewModel.news.observe(this) { response ->
-            adapter.differ.submitList(response.articles as MutableList<Article>)
-        }
-
-        viewModel.progress.observe(this){  showLoading ->
-            binding.progressBar.isVisible = showLoading
-        }
 
     }
 }
