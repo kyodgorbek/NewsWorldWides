@@ -32,6 +32,8 @@ class DetailFragment : Fragment(R.layout.detail_fragment) {
     private fun initObservers() {
         viewModel.news.observe(viewLifecycleOwner) { newsDetails ->
             binding.title.text = newsDetails.articles.firstOrNull()?.title
+
+
             newsDetails.articles.firstOrNull()?.publishedAt?.parseDate()?.let {
                 binding.articleDates.text = it.userFormat()
             }

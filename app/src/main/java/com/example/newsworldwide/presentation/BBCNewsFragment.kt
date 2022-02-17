@@ -2,26 +2,27 @@ package com.example.newsworldwide.presentation
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-
+import androidx.navigation.fragment.findNavController
 import com.example.newsworldwide.R
-import com.example.newsworldwide.databinding.NewsFragmentBinding
+import com.example.newsworldwide.databinding.BbcnewsFragmentBinding
 import com.example.newsworldwide.model.Article
 import com.example.newsworldwide.presentation.adapter.NewsAdapter
-import com.example.newsworldwide.presentation.viewmodel.NewsViewModel
+import com.example.newsworldwide.presentation.viewmodel.BBCNewsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.navigation.fragment.findNavController
 
-class BBCNewsFragment : Fragment(R.layout.news_fragment) {
 
-    private val viewModel by viewModel<NewsViewModel>()
+class BBCNewsFragment : Fragment(R.layout.bbcnews_fragment) {
+
+    private val viewModel by viewModel<BBCNewsViewModel>()
     private val adapter = NewsAdapter() { article ->
         findNavController().navigate(
-            NewsFragmentDirections.actionNewsFragmentToDetailFragment(article)
+            BBCNewsFragmentDirections.actionBbcnewsFragmentToDetailFragment(article)
         )
     }
 
-    private var _binding: NewsFragmentBinding? = null
+    private var _binding: BbcnewsFragmentBinding? = null
 
     // with the backing property of the kotlin we extract
     // the non null value of the _binding
@@ -29,7 +30,7 @@ class BBCNewsFragment : Fragment(R.layout.news_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = NewsFragmentBinding.inflate(layoutInflater)
+        _binding = BbcnewsFragmentBinding.inflate(layoutInflater)
         //Add adapter in recyclerView
         binding.recyclerView.adapter = adapter
 
