@@ -1,19 +1,18 @@
-package com.example.newsworldwide.ui
+package com.example.newsworldwide.presentation
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 
 import com.example.newsworldwide.R
 import com.example.newsworldwide.databinding.NewsFragmentBinding
 import com.example.newsworldwide.model.Article
-import com.example.newsworldwide.ui.adapter.NewsAdapter
-import com.example.newsworldwide.ui.viewmodel.NewsViewModel
+import com.example.newsworldwide.presentation.adapter.NewsAdapter
+import com.example.newsworldwide.presentation.viewmodel.NewsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 
-class NewsFragment : Fragment(R.layout.news_fragment) {
+class BBCNewsFragment : Fragment(R.layout.news_fragment) {
 
     private val viewModel by viewModel<NewsViewModel>()
     private val adapter = NewsAdapter() { article ->

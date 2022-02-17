@@ -1,6 +1,5 @@
-package com.example.newsworldwide.ui.adapter
+package com.example.newsworldwide.presentation.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -11,7 +10,6 @@ import com.example.newsworldwide.databinding.NewsItemBinding.*
 import com.example.newsworldwide.domain.utils.parseDate
 import com.example.newsworldwide.domain.utils.userFormat
 import com.example.newsworldwide.model.Article
-import com.example.newsworldwide.ui.NewsFragment
 
 class NewsAdapter(private val onClick: (Article) -> Unit): RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
@@ -53,6 +51,7 @@ class NewsAdapter(private val onClick: (Article) -> Unit): RecyclerView.Adapter<
             articles.publishedAt.parseDate()?.let {
                 itemBinding.articleDate.text = it.userFormat()
             }
+
             itemBinding.article = articles
 
         }

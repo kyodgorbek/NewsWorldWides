@@ -1,6 +1,6 @@
 package com.example.newsworldwide.domain.repository
 
-import com.example.newsworldwide.internet.NewsInterface
+import com.example.newsworldwide.data.internet.NewsInterface
 import com.example.newsworldwide.model.NewsResponse
 import com.example.newsworldwide.domain.utils.Result
 

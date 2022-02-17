@@ -1,4 +1,4 @@
-package com.example.newsworldwide.ui
+package com.example.newsworldwide.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,33 +1,36 @@
 package com.example.newsworldwide.di
 
-import android.content.Context
-import com.example.newsworldwide.ui.viewmodel.NewsViewModel
-import com.example.newsworldwide.internet.NewsInterface
-import com.example.newsworldwide.domain.repository.NewsRepository
-import com.example.newsworldwide.domain.use_case.NewsResponseUseCase
-import com.example.newsworldwide.domain.utils.Constants
 
+import android.content.Context
+import com.example.newsworldwide.domain.repository.NewsRepository
+import com.example.newsworldwide.domain.use_case.BBCNewsResponseUseCase
+import com.example.newsworldwide.domain.use_case.DetailNewsUseCase
+import com.example.newsworldwide.domain.utils.Constants
+import com.example.newsworldwide.data.internet.NewsInterface
+import com.example.newsworldwide.presentation.viewmodel.BBCNewsViewModel
+import com.example.newsworldwide.presentation.viewmodel.DetailNewsViewModel
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-
-
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import okhttp3.logging.HttpLoggingInterceptor
 
 object Modules {
 
     val viewModels = module {
-        viewModel { NewsViewModel(get()) }
+        viewModel { BBCNewsViewModel(get()) }
+        viewModel { DetailNewsViewModel(get()) }
+
     }
 
     val apiModule = module {
 
-        factory{NewsRepository(get())}
-        factory { NewsResponseUseCase(get()) }
+        factory { NewsRepository(get()) }
+        factory { BBCNewsResponseUseCase(get()) }
+        factory { DetailNewsUseCase(get()) }
 
         single<NewsInterface> {
             provideRetrofit(get<OkHttpClient>())

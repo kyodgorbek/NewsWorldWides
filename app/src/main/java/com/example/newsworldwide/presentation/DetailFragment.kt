@@ -1,21 +1,20 @@
-package com.example.newsworldwide.ui
+package com.example.newsworldwide.presentation
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.app.Person.fromBundle
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavArgs
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-
 import com.example.newsworldwide.R
 import com.example.newsworldwide.databinding.DetailFragmentBinding
-import com.example.newsworldwide.databinding.NewsFragmentBinding
 import com.example.newsworldwide.domain.utils.parseDate
 import com.example.newsworldwide.domain.utils.userFormat
+import com.example.newsworldwide.presentation.viewmodel.DetailNewsViewModel
+import com.squareup.picasso.Picasso
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : Fragment(R.layout.detail_fragment) {
     private var _binding: DetailFragmentBinding? = null
+    private val viewModel by viewModel<DetailNewsViewModel>()
 
     // with the backing property of the kotlin we extract
     // the non null value of the _binding
@@ -25,16 +24,25 @@ class DetailFragment : Fragment(R.layout.detail_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = DetailFragmentBinding.inflate(layoutInflater)
-        val article = args.article
-        binding.title.text = article.title
-        article.publishedAt.parseDate()?.let {
-            binding.articleDates.text = it.userFormat()
-        }
 
+        args.article
+        initObservers()
+    }
 
-
+    private fun initObservers() {
+        viewModel.news.observe(viewLifecycleOwner) { newsDetails ->
+            binding.title.text = newsDetails.articles.firstOrNull()?.title
+            newsDetails.articles.firstOrNull()?.publishedAt?.parseDate()?.let {
+                binding.articleDates.text = it.userFormat()
+            }
+            Picasso.get().load(newsDetails.articles.firstOrNull()?.urlToImage)
+                .into(binding.imageUrl)
 
 
         }
     }
+}
+
+
+
 
